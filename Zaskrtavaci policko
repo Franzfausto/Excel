@@ -1,0 +1,10 @@
+Sub OdskrtniSkupinuPodleRozsahu()
+    Dim rng As Range
+    Set rng = Range("B1:B50") ' Upravte rozsah podle potřeby
+
+    For Each cell In rng
+        If TypeOf cell.Controls(1) Is CheckBox Then ' Zkontrolujte, zda je první ovládací prvek zaškrtávací políčko
+            cell.Controls(1).Value = False
+        End If
+    Next cell
+End Sub
