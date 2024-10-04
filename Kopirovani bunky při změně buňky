@@ -14,3 +14,17 @@ Private Sub Worksheet_Activate()
     ' Při aktivaci listu uložíme počáteční hodnotu T44
     PreviousT44Value = Range("T44").Value
 End Sub
+
+
+Private Sub Worksheet_Calculate()
+    ' Zkontrolujeme, zda se T44 změnilo z prázdné buňky na hodnotu
+    If PreviousT44Value = "" And Range("T44").Value <> "" Then
+        ' Zkopíruje výsledek z T44 do R43 a zaokrouhlí na celé číslo
+        Range("R43").Value = Round(Range("T44").Value, 0)
+        ' Nastavíme příznak, že kopie byla provedena
+        kopieHotova = True
+    End If
+    
+    ' Uložíme aktuální hodnotu T44
+    PreviousT44Value = Range("T44").Value
+End Sub
