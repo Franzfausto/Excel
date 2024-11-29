@@ -1,0 +1,48 @@
+Private Sub Workbook_Open()
+    Dim cisloProtokoluWB As Workbook
+    Dim dataPath As String
+    Dim aktualniCislo As Long
+    Dim ws As Worksheet
+    
+    ' Vypnutí aktualizace obrazovky a výstrah
+    Application.ScreenUpdating = False
+    Application.DisplayAlerts = False
+    
+    ' Cesta k externímu sešitu "Cislo protokolu.xlsx"
+    dataPath = "S:\šablony excel\pracovní\Cislo protokolu.xlsx"
+    
+    ' Otevření pomocného sešitu na pozadí
+    On Error Resume Next
+    Set cisloProtokoluWB = Workbooks.Open(dataPath, UpdateLinks:=False, ReadOnly:=False, Editable:=True)
+    On Error GoTo 0
+    
+    ' Kontrola, zda se sešit otevřel úspěšně
+    If Not cisloProtokoluWB Is Nothing Then
+        ' Odkaz na první list pomocného sešitu
+        Set ws = cisloProtokoluWB.Sheets(1)
+        
+        ' Přečtení hodnoty z buňky A1
+        With ws.Range("A1")
+            If IsNumeric(.Value) Then
+                aktualniCislo = .Value
+            Else
+                aktualniCislo = 0
+            End If
+        End With
+        
+        ' Zvýšení hodnoty o 1
+        aktualniCislo = aktualniCislo + 1
+        
+        ' Zápis nové hodnoty zpět do buňky A1
+        ws.Range("A1").Value = aktualniCislo
+        
+        ' Uložení a zavření pomocného sešitu
+        cisloProtokoluWB.Close SaveChanges:=True
+    Else
+        MsgBox "Nelze otevřít soubor: " & dataPath
+    End If
+    
+    ' Zapnutí aktualizace obrazovky a výstrah
+    Application.ScreenUpdating = True
+    Application.DisplayAlerts = True
+End Sub
